@@ -1,0 +1,701 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Handleiding — Bambu Monitor</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --blue: #2a4a7f;
+      --blue-light: #4a6fa5;
+      --bg: #f0eeea;
+      --bg2: #fff;
+      --border: #c8c4bc;
+      --text: #1a1a1a;
+      --muted: #6a6560;
+      --green: #2a6a4a;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Space Mono', monospace;
+      line-height: 1.6;
+    }
+
+    .container {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 0 2rem;
+    }
+
+    header {
+      padding: 2.5rem 0 2rem;
+      border-bottom: 2px solid var(--text);
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+    }
+
+    .site-name {
+      font-size: 2rem;
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      line-height: 1;
+    }
+
+    .site-name span { color: var(--blue-light); }
+
+    .site-sub {
+      font-size: 0.6rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-top: 0.4rem;
+    }
+
+    .header-nav {
+      display: flex;
+      gap: 1rem;
+    }
+
+    .header-nav a {
+      font-size: 0.65rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      text-decoration: none;
+      padding: 0.4rem 0.75rem;
+      border: 1px solid var(--border);
+    }
+
+    .header-nav a:hover, .header-nav a.active {
+      color: var(--blue);
+      border-color: var(--blue);
+    }
+
+    /* TOC */
+    .toc {
+      border: 1px solid var(--text);
+      background: var(--bg2);
+      margin: 2.5rem 0;
+      box-shadow: 4px 4px 0 var(--border);
+    }
+
+    .toc-header {
+      padding: 0.75rem 1.25rem;
+      border-bottom: 1px solid var(--text);
+      font-size: 0.6rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .toc-list {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      padding: 1rem 1.25rem;
+      gap: 0.4rem;
+    }
+
+    .toc-list a {
+      font-size: 0.75rem;
+      color: var(--blue);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .toc-list a::before {
+      content: '→';
+      color: var(--muted);
+    }
+
+    .toc-list a:hover { text-decoration: underline; }
+
+    /* Sections */
+    section {
+      padding: 2.5rem 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .section-label {
+      font-size: 0.6rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 0.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .section-label::before { content: '—'; }
+
+    h2 {
+      font-size: 1.4rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin-bottom: 1.5rem;
+    }
+
+    h2 span { color: var(--blue-light); }
+
+    h3 {
+      font-size: 0.85rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin: 1.5rem 0 0.75rem;
+    }
+
+    p {
+      font-size: 0.82rem;
+      color: var(--muted);
+      line-height: 1.8;
+      margin-bottom: 0.75rem;
+    }
+
+    p strong { color: var(--text); }
+
+    /* Info box */
+    .info-box {
+      border-left: 3px solid var(--blue);
+      background: var(--bg2);
+      padding: 1rem 1.25rem;
+      margin: 1rem 0;
+      font-size: 0.8rem;
+      color: var(--muted);
+    }
+
+    .info-box strong { color: var(--text); display: block; margin-bottom: 0.25rem; }
+
+    /* Warning box */
+    .warn-box {
+      border-left: 3px solid #c0392b;
+      background: var(--bg2);
+      padding: 1rem 1.25rem;
+      margin: 1rem 0;
+      font-size: 0.8rem;
+      color: var(--muted);
+    }
+
+    .warn-box strong { color: #c0392b; display: block; margin-bottom: 0.25rem; }
+
+    /* Tables */
+    .table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1rem 0;
+      font-size: 0.8rem;
+      border: 1px solid var(--text);
+      background: var(--bg2);
+    }
+
+    .table th {
+      font-size: 0.6rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--muted);
+      text-align: left;
+      padding: 0.6rem 1rem;
+      border-bottom: 1px solid var(--text);
+      background: var(--bg);
+    }
+
+    .table td {
+      padding: 0.65rem 1rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .table tr:last-child td { border-bottom: none; }
+    .table tr:hover td { background: var(--bg); }
+
+    .pin {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.72rem;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      padding: 0.1rem 0.4rem;
+      color: var(--blue);
+      font-weight: 700;
+    }
+
+    /* Steps */
+    .steps {
+      border: 1px solid var(--text);
+      background: var(--bg2);
+      margin: 1rem 0;
+    }
+
+    .step {
+      display: grid;
+      grid-template-columns: 56px 1fr;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .step:last-child { border-bottom: none; }
+
+    .step-num {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--blue-light);
+      padding: 1.25rem;
+      border-right: 1px solid var(--border);
+    }
+
+    .step-content { padding: 1.25rem; }
+
+    .step h4 {
+      font-size: 0.82rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 0.4rem;
+    }
+
+    .step p { margin: 0; font-size: 0.78rem; }
+
+    /* Troubleshoot list */
+    .trouble-list {
+      border: 1px solid var(--text);
+      background: var(--bg2);
+      margin: 1rem 0;
+    }
+
+    .trouble-item {
+      padding: 1.1rem 1.25rem;
+      border-bottom: 1px solid var(--border);
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+    }
+
+    .trouble-item:last-child { border-bottom: none; }
+
+    .trouble-problem {
+      font-size: 0.8rem;
+      font-weight: 700;
+    }
+
+    .trouble-solution {
+      font-size: 0.78rem;
+      color: var(--muted);
+    }
+
+    code {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.72rem;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      padding: 0.1rem 0.35rem;
+      color: var(--blue);
+      font-weight: 700;
+    }
+
+    /* Buttons */
+    .btn {
+      display: inline-block;
+      font-family: 'Space Mono', monospace;
+      font-size: 0.68rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 0.55rem 1.1rem;
+      text-decoration: none;
+      border: 2px solid var(--text);
+      margin-top: 1rem;
+      margin-right: 0.5rem;
+    }
+
+    .btn-primary { background: var(--text); color: var(--bg); font-weight: 700; }
+    .btn-secondary { background: transparent; color: var(--text); }
+    .btn:hover { opacity: 0.8; }
+
+    /* URL display */
+    .url {
+      display: inline-block;
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--blue);
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      padding: 0.4rem 0.8rem;
+      margin: 0.5rem 0;
+    }
+
+    footer {
+      padding: 2rem 0;
+      border-top: 2px solid var(--text);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    footer p { font-size: 0.7rem; color: var(--muted); }
+    footer a { color: var(--blue); text-decoration: none; font-weight: 700; }
+
+    @media (max-width: 600px) {
+      .toc-list { grid-template-columns: 1fr; }
+      .trouble-item { grid-template-columns: 1fr; }
+      .header-nav { display: none; }
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+
+  <header>
+    <div>
+      <div class="site-name">BAMBU<span>MONITOR</span></div>
+      <div class="site-sub">Handleiding — v1.0</div>
+    </div>
+    <nav class="header-nav">
+      <a href="index.html">Project</a>
+      <a href="handleiding.html" class="active">Handleiding</a>
+      <a href="https://github.com/wibo63/bambu-monitor">GitHub</a>
+    </nav>
+  </header>
+
+  <!-- TOC -->
+  <div class="toc">
+    <div class="toc-header">Inhoudsopgave</div>
+    <div class="toc-list">
+      <a href="#wat-doet-het">Wat doet het?</a>
+      <a href="#hardware">Benodigde hardware</a>
+      <a href="#bedrading">Bedrading</a>
+      <a href="#installatie">Firmware installeren</a>
+      <a href="#eerste-opstart">Eerste opstart</a>
+      <a href="#webinterface">Webinterface</a>
+      <a href="#printer-gegevens">Printer gegevens vinden</a>
+      <a href="#reset">Reset opties</a>
+      <a href="#problemen">Problemen oplossen</a>
+      <a href="#technisch">Technische details</a>
+    </div>
+  </div>
+
+  <!-- Wat doet het -->
+  <section id="wat-doet-het">
+    <div class="section-label">Overzicht</div>
+    <h2>Wat doet <span>het?</span></h2>
+    <p>De Bambu Monitor is een ronde display monitor voor de Bambu Lab 3D printer. Hij toont realtime informatie direct op een compact rond scherm van 240×240 pixels.</p>
+
+    <h3>Tijdens het printen</h3>
+    <p>Het scherm toont de voortgang als percentage en een progress ring, de nozzle en bed temperatuur, de resterende printtijd en de bestandsnaam.</p>
+
+    <h3>In rust (idle modus)</h3>
+    <p>Als de printer niet bezig is toont het scherm de huidige tijd, datum en de buitentemperatuur via de Open-Meteo weerservice.</p>
+
+    <h3>Webinterface</h3>
+    <p>Na verbinding is de monitor bereikbaar via <span class="url">http://bambu-monitor.local</span> voor status, instellingen en reset.</p>
+  </section>
+
+  <!-- Hardware -->
+  <section id="hardware">
+    <div class="section-label">Hardware</div>
+    <h2>Benodigde <span>hardware</span></h2>
+    <p>Alle onderdelen zijn verkrijgbaar via AliExpress of lokale electronicawinkels. Totale kosten ca. €10.</p>
+
+    <table class="table">
+      <thead>
+        <tr><th>Onderdeel</th><th>Beschrijving</th><th>Prijs</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><strong>ESP32-C3 Super Mini</strong></td><td>Microcontroller met ingebouwde WiFi</td><td>±€3</td></tr>
+        <tr><td><strong>GC9A01 rond display</strong></td><td>240×240 pixels, 1.28 inch rond TFT scherm</td><td>±€4</td></tr>
+        <tr><td><strong>USB-C kabel + oplader</strong></td><td>Voor voeding en eerste installatie</td><td>—</td></tr>
+        <tr><td><strong>Dupont jumper draden</strong></td><td>Voor bedrading tussen scherm en ESP32</td><td>±€2</td></tr>
+      </tbody>
+    </table>
+
+    <div class="info-box">
+      <strong>Let op bij bestellen</strong>
+      Zorg dat je de ESP32-C3 <strong>Super Mini</strong> bestelt, niet de gewone ESP32-C3. De pinout verschilt. Het GC9A01 scherm moet een SPI interface hebben (niet I2C).
+    </div>
+  </section>
+
+  <!-- Bedrading -->
+  <section id="bedrading">
+    <div class="section-label">Bedrading</div>
+    <h2>Aansluiten</h2>
+    <p>Sluit het GC9A01 scherm als volgt aan op de ESP32-C3 Super Mini met dupont draden.</p>
+
+    <table class="table">
+      <thead>
+        <tr><th>GC9A01 pin</th><th>ESP32-C3 pin</th><th>Omschrijving</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>VCC</td><td><span class="pin">3.3V</span> of <span class="pin">5V</span></td><td>Voeding</td></tr>
+        <tr><td>GND</td><td><span class="pin">GND</span></td><td>Ground</td></tr>
+        <tr><td>SCL</td><td><span class="pin">GPIO 4</span></td><td>SPI Clock</td></tr>
+        <tr><td>SDA</td><td><span class="pin">GPIO 6</span></td><td>SPI Data (MOSI)</td></tr>
+        <tr><td>RES</td><td><span class="pin">GPIO 3</span></td><td>Reset</td></tr>
+        <tr><td>DC</td><td><span class="pin">GPIO 2</span></td><td>Data/Command</td></tr>
+        <tr><td>CS</td><td><span class="pin">GPIO 7</span></td><td>Chip Select</td></tr>
+      </tbody>
+    </table>
+
+    <div class="info-box">
+      <strong>SDA = MOSI, SCL = SCK</strong>
+      Sommige GC9A01 schermen labelen de SPI pinnen als I2C namen. SDA is hetzelfde als MOSI (data), SCL is hetzelfde als SCK (clock). Dit is normaal voor dit type scherm.
+    </div>
+  </section>
+
+  <!-- Installatie -->
+  <section id="installatie">
+    <div class="section-label">Installatie</div>
+    <h2>Firmware <span>installeren</span></h2>
+    <p>Je hebt geen software nodig om de firmware te installeren. Dit gaat via een webpagina in je browser. Gebruik Chrome of Edge — Firefox ondersteunt de benodigde Web Serial API niet.</p>
+
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">01</div>
+        <div class="step-content">
+          <h4>Download de firmware</h4>
+          <p>Download het <code>firmware.bin</code> bestand via de projectpagina of direct van GitHub.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">02</div>
+        <div class="step-content">
+          <h4>Sluit de ESP32 aan</h4>
+          <p>Verbind de ESP32-C3 via een USB-C kabel met je computer. Zorg dat de kabel data ondersteunt (niet alleen voeding).</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">03</div>
+        <div class="step-content">
+          <h4>Open de flash tool</h4>
+          <p>Ga naar <span class="url">espressif.github.io/esptool-js</span> in Chrome of Edge.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">04</div>
+        <div class="step-content">
+          <h4>Verbind met de ESP32</h4>
+          <p>Klik op "Connect" en selecteer de juiste USB poort in het pop-up venster. De ESP32 verschijnt als iets als <code>USB Serial Device</code> of <code>CP2102</code>.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">05</div>
+        <div class="step-content">
+          <h4>Selecteer de firmware</h4>
+          <p>Klik op "Choose File" en selecteer het gedownloade <code>firmware.bin</code> bestand. Stel het flash adres in op <code>0x10000</code>.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">06</div>
+        <div class="step-content">
+          <h4>Flash de firmware</h4>
+          <p>Klik op "Program" en wacht tot het proces klaar is. Dit duurt ca. 30 seconden. Je ziet een voortgangsbalk.</p>
+        </div>
+      </div>
+    </div>
+
+    <a href="firmware.bin" class="btn btn-primary" download>⬇ Download firmware.bin</a>
+    <a href="https://espressif.github.io/esptool-js/" target="_blank" class="btn btn-secondary">Open flash tool →</a>
+  </section>
+
+  <!-- Eerste opstart -->
+  <section id="eerste-opstart">
+    <div class="section-label">Setup</div>
+    <h2>Eerste <span>opstart</span></h2>
+    <p>Na het flashen van de firmware moet je de monitor instellen met je WiFi en printer gegevens.</p>
+
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">01</div>
+        <div class="step-content">
+          <h4>Loskoppelen en opstarten</h4>
+          <p>Koppel de ESP32 los van de computer en sluit hem aan op een USB oplader. Het scherm toont "Setup".</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">02</div>
+        <div class="step-content">
+          <h4>Verbind met BambuMonitor WiFi</h4>
+          <p>Op je telefoon of computer verschijnt een WiFi netwerk genaamd <code>BambuMonitor</code>. Verbind hiermee.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">03</div>
+        <div class="step-content">
+          <h4>Open de setup pagina</h4>
+          <p>Ga naar <span class="url">http://192.168.4.1</span> in je browser. Je ziet een formulier.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">04</div>
+        <div class="step-content">
+          <h4>Vul je gegevens in</h4>
+          <p>Vul je WiFi naam, wachtwoord, printer IP, serienummer en LAN access code in. Zie het hoofdstuk "Printer gegevens vinden" als je deze niet weet.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">05</div>
+        <div class="step-content">
+          <h4>Opslaan en verbinden</h4>
+          <p>Klik "Opslaan". De monitor herstart automatisch en verbindt met je WiFi en printer.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Webinterface -->
+  <section id="webinterface">
+    <div class="section-label">Webinterface</div>
+    <h2>Beheer via <span>de browser</span></h2>
+    <p>Na verbinding is de monitor bereikbaar via <span class="url">http://bambu-monitor.local</span> op elk apparaat in je netwerk. De pagina ververst automatisch elke 10 seconden.</p>
+
+    <h3>Beschikbare pagina's</h3>
+    <table class="table">
+      <thead>
+        <tr><th>URL</th><th>Omschrijving</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><code>/</code></td><td>Status — verbinding, printer info, weertemperatuur</td></tr>
+        <tr><td><code>/settings</code></td><td>Instellingen aanpassen (WiFi, printer, timer)</td></tr>
+        <tr><td><code>/reset</code></td><td>Alle instellingen wissen en opnieuw instellen</td></tr>
+      </tbody>
+    </table>
+
+    <h3>Instellingen aanpassen</h3>
+    <p>Via <code>/settings</code> kun je aanpassen: WiFi netwerk en wachtwoord, printer IP adres, serienummer en access code, en de timer na een afgeronde print.</p>
+
+    <div class="info-box">
+      <strong>Wachtwoord wijzigen</strong>
+      Laat het wachtwoordveld leeg als je het wachtwoord niet wilt wijzigen. Alleen ingevulde velden worden bijgewerkt.
+    </div>
+
+    <h3>Timer na afgeronde print</h3>
+    <p>Als de printer klaar is toont het scherm "KLAAR". Na een instelbare tijd gaat het scherm automatisch terug naar de idle modus. De timer is aan/uit te zetten en de duur is in te stellen via de webinterface.</p>
+  </section>
+
+  <!-- Printer gegevens -->
+  <section id="printer-gegevens">
+    <div class="section-label">Configuratie</div>
+    <h2>Printer gegevens <span>vinden</span></h2>
+
+    <h3>Printer IP adres</h3>
+    <p>Het IP adres vind je op twee manieren: open de <strong>Bambu app</strong> en ga naar printer instellingen → netwerk, of kijk in je <strong>router</strong> bij verbonden apparaten. Zoek naar een apparaat met de naam van je printer.</p>
+
+    <div class="warn-box">
+      <strong>Let op: wisselend IP adres</strong>
+      Routers kunnen een ander IP adres toewijzen na een herstart. Als de monitor niet meer verbindt controleer dan of het IP adres nog klopt.
+    </div>
+
+    <h3>Serienummer</h3>
+    <p>Het serienummer staat op een sticker aan de onderkant van de printer. Je kunt het ook vinden in de Bambu app onder printer info.</p>
+
+    <h3>LAN access code</h3>
+    <p>De LAN access code vind je in de Bambu app. Ga naar je printer → instellingen → zoek naar "Access code", "LAN mode" of "Local network". De code bestaat uit letters en cijfers.</p>
+  </section>
+
+  <!-- Reset -->
+  <section id="reset">
+    <div class="section-label">Reset</div>
+    <h2>Reset <span>opties</span></h2>
+
+    <h3>Via de webinterface</h3>
+    <p>Ga naar <span class="url">http://bambu-monitor.local/reset</span> en bevestig. Alle instellingen worden gewist en de monitor herstart naar de setup portal.</p>
+
+    <h3>Via de BOOT knop</h3>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">01</div>
+        <div class="step-content">
+          <h4>Houd BOOT ingedrukt</h4>
+          <p>Houd de BOOT knop op de ESP32 ingedrukt (het kleine knopje, niet RST).</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">02</div>
+        <div class="step-content">
+          <h4>Druk kort op RST</h4>
+          <p>Druk kort op de RST knop terwijl je BOOT ingedrukt houdt.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">03</div>
+        <div class="step-content">
+          <h4>Wacht 3 seconden</h4>
+          <p>Blijf BOOT ingedrukt houden voor minimaal 3 seconden na de RST druk.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">04</div>
+        <div class="step-content">
+          <h4>Laat BOOT los</h4>
+          <p>Het scherm toont "Setup" en het WiFi netwerk BambuMonitor verschijnt.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Problemen oplossen -->
+  <section id="problemen">
+    <div class="section-label">Troubleshooting</div>
+    <h2>Problemen <span>oplossen</span></h2>
+
+    <div class="trouble-list">
+      <div class="trouble-item">
+        <div class="trouble-problem">Scherm toont "Verbinden..."</div>
+        <div class="trouble-solution">MQTT verbinding mislukt. Controleer of het printer IP adres en de LAN access code correct zijn. Zorg dat de printer aan staat.</div>
+      </div>
+      <div class="trouble-item">
+        <div class="trouble-problem">BambuMonitor WiFi verschijnt niet</div>
+        <div class="trouble-solution">Koppel de ESP32 los van de computer en sluit aan op een USB oplader. Wacht 15 seconden.</div>
+      </div>
+      <div class="trouble-item">
+        <div class="trouble-problem">bambu-monitor.local niet bereikbaar</div>
+        <div class="trouble-solution">Gebruik het IP adres van de monitor uit je router. mDNS werkt niet altijd op alle apparaten.</div>
+      </div>
+      <div class="trouble-item">
+        <div class="trouble-problem">Printer data wordt niet bijgewerkt</div>
+        <div class="trouble-solution">Controleer of de printer aan staat en of het IP adres nog klopt. Soms wijst de router een nieuw IP toe na herstart.</div>
+      </div>
+      <div class="trouble-item">
+        <div class="trouble-problem">Scherm blijft donker</div>
+        <div class="trouble-solution">Controleer de bedrading. VCC moet op 3.3V of 5V zitten. Controleer of alle pinnen correct aangesloten zijn.</div>
+      </div>
+      <div class="trouble-item">
+        <div class="trouble-problem">Flash tool herkent de ESP32 niet</div>
+        <div class="trouble-solution">Gebruik Chrome of Edge, niet Firefox. Probeer een andere USB kabel (sommige kabels ondersteunen geen data). Houd BOOT ingedrukt bij het aansluiten.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Technisch -->
+  <section id="technisch">
+    <div class="section-label">Technisch</div>
+    <h2>Technische <span>details</span></h2>
+
+    <table class="table">
+      <thead>
+        <tr><th>Onderdeel</th><th>Details</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><strong>Platform</strong></td><td>ESP32-C3, Arduino framework via PlatformIO</td></tr>
+        <tr><td><strong>Display library</strong></td><td>Arduino_GFX 1.3.7</td></tr>
+        <tr><td><strong>Weerdata</strong></td><td>Open-Meteo API — gratis, geen API key nodig</td></tr>
+        <tr><td><strong>Printer communicatie</strong></td><td>MQTT over LAN, poort 8883, TLS</td></tr>
+        <tr><td><strong>Webserver</strong></td><td>ESPAsyncWebServer</td></tr>
+        <tr><td><strong>Lokale naam</strong></td><td>mDNS — bambu-monitor.local</td></tr>
+        <tr><td><strong>Instellingen opslag</strong></td><td>NVS flash via Preferences library</td></tr>
+        <tr><td><strong>SPI pinnen</strong></td><td>SCK=4, MOSI=6, CS=7, DC=2, RST=3</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <footer>
+    <p>Bambu Monitor — <a href="https://github.com/wibo63/bambu-monitor">github.com/wibo63/bambu-monitor</a></p>
+    <p>Gebouwd door <a href="https://koolstraweb.nl">koolstraweb.nl</a></p>
+  </footer>
+
+</div>
+</body>
+</html>
