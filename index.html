@@ -5,18 +5,19 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Bambu Monitor — Ronde display voor je 3D printer</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
   <style>
     :root {
-      --green: #1D9E75;
-      --green-dim: #0f5240;
-      --bg: #0a0a0a;
-      --bg2: #111;
-      --bg3: #1a1a1a;
-      --border: #222;
-      --text: #e8e8e8;
-      --muted: #666;
-      --accent: #00ff9d;
+      --blue: #2a4a7f;
+      --blue-light: #4a6fa5;
+      --blue-dim: #d0daea;
+      --bg: #f0eeea;
+      --bg2: #fff;
+      --border: #c8c4bc;
+      --text: #1a1a1a;
+      --muted: #6a6560;
+      --accent: #2a4a7f;
+      --green: #2a6a4a;
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -24,229 +25,236 @@
     body {
       background: var(--bg);
       color: var(--text);
-      font-family: 'DM Sans', sans-serif;
+      font-family: 'Space Mono', monospace;
       line-height: 1.6;
       overflow-x: hidden;
     }
 
-    /* Grid background */
-    body::before {
-      content: '';
-      position: fixed;
-      inset: 0;
-      background-image:
-        linear-gradient(rgba(29,158,117,0.03) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(29,158,117,0.03) 1px, transparent 1px);
-      background-size: 40px 40px;
-      pointer-events: none;
-      z-index: 0;
-    }
-
     .container {
-      max-width: 860px;
+      max-width: 1000px;
       margin: 0 auto;
       padding: 0 2rem;
-      position: relative;
-      z-index: 1;
+    }
+
+    /* Header */
+    header {
+      padding: 2.5rem 0 2rem;
+      border-bottom: 2px solid var(--text);
+    }
+
+    .site-name {
+      font-size: 2.5rem;
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      line-height: 1;
+      margin-bottom: 0.5rem;
+    }
+
+    .site-name span {
+      color: var(--blue-light);
+    }
+
+    .site-sub {
+      font-size: 0.65rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--muted);
     }
 
     /* Hero */
     .hero {
-      padding: 6rem 0 4rem;
-      text-align: center;
+      padding: 3rem 0 2.5rem;
+      border-bottom: 1px solid var(--border);
+      display: grid;
+      grid-template-columns: 1fr 200px;
+      gap: 3rem;
+      align-items: center;
     }
 
-    .badge {
-      display: inline-block;
-      font-family: 'Space Mono', monospace;
-      font-size: 0.7rem;
-      color: var(--accent);
-      border: 1px solid var(--green-dim);
-      background: rgba(29,158,117,0.08);
-      padding: 0.3rem 0.8rem;
-      border-radius: 2px;
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      margin-bottom: 2rem;
-    }
-
-    h1 {
-      font-family: 'Space Mono', monospace;
-      font-size: clamp(2rem, 5vw, 3.5rem);
-      font-weight: 700;
-      line-height: 1.1;
-      letter-spacing: -0.03em;
-      margin-bottom: 1.5rem;
-    }
-
-    h1 span {
-      color: var(--green);
-    }
-
-    .hero-sub {
-      font-size: 1.1rem;
+    .hero-text p {
+      font-size: 0.95rem;
       color: var(--muted);
-      max-width: 520px;
-      margin: 0 auto 3rem;
-      font-weight: 300;
+      max-width: 560px;
+      margin-bottom: 2rem;
+      line-height: 1.8;
+    }
+
+    .hero-text p strong {
+      color: var(--text);
+      font-weight: 700;
+    }
+
+    .hero-btns {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
     }
 
     /* Display preview */
     .display-preview {
-      width: 200px;
-      height: 200px;
+      width: 180px;
+      height: 180px;
       border-radius: 50%;
-      background: radial-gradient(circle at 40% 35%, #1a2a24, #0a0f0d);
-      border: 2px solid var(--green-dim);
-      margin: 0 auto 4rem;
+      background: #1a1a1a;
+      border: 2px solid var(--text);
       display: flex;
       align-items: center;
       justify-content: center;
       position: relative;
-      box-shadow:
-        0 0 60px rgba(29,158,117,0.15),
-        0 0 120px rgba(29,158,117,0.05),
-        inset 0 0 40px rgba(0,0,0,0.5);
-      animation: pulse 4s ease-in-out infinite;
+      box-shadow: 4px 4px 0 var(--text);
     }
 
-    @keyframes pulse {
-      0%, 100% { box-shadow: 0 0 60px rgba(29,158,117,0.15), 0 0 120px rgba(29,158,117,0.05), inset 0 0 40px rgba(0,0,0,0.5); }
-      50% { box-shadow: 0 0 80px rgba(29,158,117,0.25), 0 0 160px rgba(29,158,117,0.1), inset 0 0 40px rgba(0,0,0,0.5); }
+    .display-preview svg {
+      position: absolute;
+      top: -6px;
+      left: -6px;
+      width: 192px;
+      height: 192px;
     }
 
     .display-inner {
       text-align: center;
+      color: #e8e8e8;
     }
 
     .display-time {
-      font-family: 'Space Mono', monospace;
-      font-size: 2rem;
-      color: var(--text);
+      font-size: 1.8rem;
+      font-weight: 700;
       display: block;
+      letter-spacing: -0.03em;
     }
 
     .display-temp {
-      font-family: 'Space Mono', monospace;
-      font-size: 0.85rem;
-      color: var(--green);
+      font-size: 0.75rem;
+      color: #4ade80;
       display: block;
-      margin-top: 0.25rem;
+      margin-top: 0.2rem;
     }
 
     .display-date {
-      font-size: 0.65rem;
-      color: var(--muted);
+      font-size: 0.6rem;
+      color: #666;
       display: block;
-      margin-top: 0.25rem;
+      margin-top: 0.2rem;
     }
 
-    /* Arc indicator */
-    .display-preview svg {
-      position: absolute;
-      top: -8px;
-      left: -8px;
-      width: 216px;
-      height: 216px;
-    }
-
-    /* Sections */
+    /* Section */
     section {
-      padding: 4rem 0;
-      border-top: 1px solid var(--border);
+      padding: 3rem 0;
+      border-bottom: 1px solid var(--border);
     }
 
     .section-label {
-      font-family: 'Space Mono', monospace;
-      font-size: 0.65rem;
-      color: var(--green);
-      letter-spacing: 0.2em;
+      font-size: 0.6rem;
+      letter-spacing: 0.25em;
       text-transform: uppercase;
-      margin-bottom: 0.75rem;
+      color: var(--muted);
+      margin-bottom: 0.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .section-label::before {
+      content: '—';
     }
 
     h2 {
-      font-family: 'Space Mono', monospace;
-      font-size: 1.5rem;
+      font-size: 1.6rem;
       font-weight: 700;
+      letter-spacing: -0.03em;
       margin-bottom: 1.5rem;
-      letter-spacing: -0.02em;
+      line-height: 1.1;
     }
 
-    p {
-      color: #aaa;
-      margin-bottom: 1rem;
-      font-weight: 300;
-    }
+    h2 span { color: var(--blue-light); }
 
     /* Features grid */
-    .features {
+    .grid-3 {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-      gap: 1px;
-      background: var(--border);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      overflow: hidden;
-      margin-top: 2rem;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0;
+      border: 1px solid var(--text);
+      margin-top: 1.5rem;
     }
 
-    .feature {
-      background: var(--bg2);
+    .grid-item {
       padding: 1.5rem;
+      border-right: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      background: var(--bg2);
+      position: relative;
     }
 
-    .feature-icon {
-      font-size: 1.5rem;
+    .grid-item:nth-child(3n) { border-right: none; }
+    .grid-item:nth-last-child(-n+3) { border-bottom: none; }
+
+    .grid-num {
+      font-size: 0.6rem;
+      letter-spacing: 0.15em;
+      color: var(--muted);
       margin-bottom: 0.75rem;
+    }
+
+    .grid-icon {
+      font-size: 1.2rem;
+      margin-bottom: 0.5rem;
       display: block;
     }
 
-    .feature h3 {
-      font-family: 'Space Mono', monospace;
+    .grid-item h3 {
       font-size: 0.85rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
       margin-bottom: 0.5rem;
-      color: var(--text);
     }
 
-    .feature p {
-      font-size: 0.85rem;
+    .grid-item p {
+      font-size: 0.75rem;
       color: var(--muted);
-      margin: 0;
+      line-height: 1.7;
     }
 
-    /* Hardware table */
-    .hw-grid {
-      display: grid;
-      gap: 1rem;
-      margin-top: 2rem;
+    /* Hardware list */
+    .hw-list {
+      border: 1px solid var(--text);
+      margin-top: 1.5rem;
+      background: var(--bg2);
     }
 
     .hw-item {
-      display: flex;
-      align-items: center;
+      display: grid;
+      grid-template-columns: 40px 1fr auto;
       gap: 1rem;
-      background: var(--bg2);
-      border: 1px solid var(--border);
-      border-radius: 8px;
+      align-items: center;
       padding: 1rem 1.25rem;
+      border-bottom: 1px solid var(--border);
     }
 
+    .hw-item:last-child { border-bottom: none; }
+
     .hw-num {
-      font-family: 'Space Mono', monospace;
-      font-size: 0.7rem;
-      color: var(--green);
-      min-width: 24px;
+      font-size: 0.6rem;
+      color: var(--muted);
+      letter-spacing: 0.1em;
     }
 
     .hw-name {
-      font-weight: 500;
-      font-size: 0.95rem;
+      font-size: 0.85rem;
+      font-weight: 700;
     }
 
     .hw-desc {
-      font-size: 0.8rem;
+      font-size: 0.75rem;
       color: var(--muted);
+      margin-top: 0.15rem;
+    }
+
+    .hw-price {
+      font-size: 0.75rem;
+      color: var(--muted);
+      white-space: nowrap;
     }
 
     /* Wiring table */
@@ -254,250 +262,277 @@
       width: 100%;
       border-collapse: collapse;
       margin-top: 1.5rem;
-      font-size: 0.9rem;
+      font-size: 0.8rem;
+      border: 1px solid var(--text);
+      background: var(--bg2);
     }
 
     .wire-table th {
-      font-family: 'Space Mono', monospace;
-      font-size: 0.7rem;
-      letter-spacing: 0.1em;
+      font-size: 0.6rem;
+      letter-spacing: 0.15em;
       text-transform: uppercase;
       color: var(--muted);
       text-align: left;
       padding: 0.6rem 1rem;
-      border-bottom: 1px solid var(--border);
+      border-bottom: 1px solid var(--text);
+      background: var(--bg);
     }
 
     .wire-table td {
-      padding: 0.7rem 1rem;
+      padding: 0.65rem 1rem;
       border-bottom: 1px solid var(--border);
     }
 
     .wire-table tr:last-child td { border-bottom: none; }
-
-    .wire-table tr:hover td { background: rgba(29,158,117,0.04); }
+    .wire-table tr:hover td { background: var(--bg); }
 
     .pin {
       font-family: 'Space Mono', monospace;
-      font-size: 0.8rem;
-      background: var(--bg3);
+      font-size: 0.75rem;
+      background: var(--bg);
       border: 1px solid var(--border);
-      padding: 0.15rem 0.5rem;
-      border-radius: 3px;
-      color: var(--accent);
+      padding: 0.1rem 0.4rem;
+      border-radius: 2px;
+      color: var(--blue);
+      font-weight: 700;
     }
 
     /* Steps */
     .steps {
-      display: grid;
-      gap: 1rem;
-      margin-top: 2rem;
-      counter-reset: step;
+      border: 1px solid var(--text);
+      background: var(--bg2);
+      margin-top: 1.5rem;
     }
 
     .step {
       display: grid;
-      grid-template-columns: 48px 1fr;
-      gap: 1rem;
-      background: var(--bg2);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 1.25rem;
-      counter-increment: step;
+      grid-template-columns: 56px 1fr;
+      border-bottom: 1px solid var(--border);
     }
 
+    .step:last-child { border-bottom: none; }
+
     .step-num {
-      font-family: 'Space Mono', monospace;
       font-size: 1.2rem;
       font-weight: 700;
-      color: var(--green);
-      line-height: 1;
+      color: var(--blue-light);
+      padding: 1.25rem;
+      border-right: 1px solid var(--border);
+      display: flex;
+      align-items: flex-start;
+      padding-top: 1.4rem;
+    }
+
+    .step-content {
+      padding: 1.25rem;
     }
 
     .step h3 {
-      font-size: 0.95rem;
-      font-weight: 500;
+      font-size: 0.85rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
       margin-bottom: 0.4rem;
     }
 
     .step p {
-      font-size: 0.85rem;
+      font-size: 0.8rem;
       color: var(--muted);
-      margin: 0;
+      line-height: 1.7;
     }
 
-    .step code {
+    code {
       font-family: 'Space Mono', monospace;
       font-size: 0.75rem;
-      background: var(--bg3);
+      background: var(--bg);
       border: 1px solid var(--border);
-      padding: 0.1rem 0.4rem;
-      border-radius: 3px;
-      color: var(--accent);
-    }
-
-    /* Flash tool section */
-    .flash-box {
-      background: var(--bg2);
-      border: 1px solid var(--green-dim);
-      border-radius: 8px;
-      padding: 2rem;
-      margin-top: 2rem;
-      text-align: center;
-    }
-
-    .flash-box h3 {
-      font-family: 'Space Mono', monospace;
-      font-size: 1rem;
-      margin-bottom: 0.75rem;
-    }
-
-    .flash-box p {
-      font-size: 0.9rem;
-      margin-bottom: 1.5rem;
-    }
-
-    .btn {
-      display: inline-block;
-      font-family: 'Space Mono', monospace;
-      font-size: 0.8rem;
-      letter-spacing: 0.05em;
-      padding: 0.75rem 1.5rem;
-      border-radius: 4px;
-      text-decoration: none;
-      cursor: pointer;
-      border: none;
-      transition: all 0.2s;
-    }
-
-    .btn-primary {
-      background: var(--green);
-      color: #000;
+      padding: 0.1rem 0.35rem;
+      color: var(--blue);
       font-weight: 700;
     }
 
+    /* Flash box */
+    .flash-box {
+      border: 2px solid var(--text);
+      background: var(--bg2);
+      padding: 2rem;
+      margin-top: 2rem;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 2rem;
+      align-items: center;
+      box-shadow: 4px 4px 0 var(--text);
+    }
+
+    .flash-box h3 {
+      font-size: 0.85rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 0.5rem;
+    }
+
+    .flash-box p {
+      font-size: 0.8rem;
+      color: var(--muted);
+    }
+
+    .flash-btns {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    /* Buttons */
+    .btn {
+      display: inline-block;
+      font-family: 'Space Mono', monospace;
+      font-size: 0.7rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 0.6rem 1.2rem;
+      text-decoration: none;
+      cursor: pointer;
+      border: none;
+      transition: all 0.15s;
+      white-space: nowrap;
+    }
+
+    .btn-primary {
+      background: var(--text);
+      color: var(--bg);
+      font-weight: 700;
+      border: 2px solid var(--text);
+    }
+
     .btn-primary:hover {
-      background: var(--accent);
-      transform: translateY(-1px);
+      background: var(--blue);
+      border-color: var(--blue);
     }
 
     .btn-secondary {
       background: transparent;
-      color: var(--green);
-      border: 1px solid var(--green-dim);
-      margin-left: 1rem;
+      color: var(--text);
+      border: 2px solid var(--text);
+      font-weight: 700;
     }
 
     .btn-secondary:hover {
-      border-color: var(--green);
-      background: rgba(29,158,117,0.08);
+      background: var(--bg);
     }
 
-    /* Web interface preview */
+    /* Web UI preview */
     .ui-preview {
+      border: 1px solid var(--text);
       background: var(--bg2);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      overflow: hidden;
-      margin-top: 2rem;
+      margin-top: 1.5rem;
+      box-shadow: 4px 4px 0 var(--border);
     }
 
     .ui-bar {
-      background: var(--bg3);
-      padding: 0.6rem 1rem;
+      background: var(--bg);
+      padding: 0.5rem 1rem;
       display: flex;
       align-items: center;
       gap: 0.5rem;
-      border-bottom: 1px solid var(--border);
+      border-bottom: 1px solid var(--text);
     }
 
     .ui-dot {
-      width: 10px;
-      height: 10px;
+      width: 8px;
+      height: 8px;
       border-radius: 50%;
       background: var(--border);
+      border: 1px solid var(--muted);
     }
 
     .ui-url {
-      font-family: 'Space Mono', monospace;
-      font-size: 0.7rem;
+      font-size: 0.65rem;
       color: var(--muted);
       margin-left: 0.5rem;
+      letter-spacing: 0.05em;
     }
 
     .ui-content {
       padding: 1.5rem;
-    }
-
-    .ui-nav {
-      display: flex;
-      gap: 0.5rem;
-      margin-bottom: 1rem;
-    }
-
-    .ui-tab {
-      font-size: 0.75rem;
-      padding: 0.3rem 0.75rem;
-      border-radius: 4px;
-      background: var(--bg3);
-      color: var(--muted);
-    }
-
-    .ui-tab.active {
-      background: rgba(29,158,117,0.15);
-      color: var(--green);
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
     }
 
     .ui-card {
-      background: var(--bg3);
-      border-radius: 6px;
+      border: 1px solid var(--border);
       padding: 1rem;
-      margin-bottom: 0.75rem;
+      background: var(--bg);
     }
 
     .ui-card-title {
-      font-size: 0.7rem;
-      color: var(--green);
-      font-weight: 500;
+      font-size: 0.55rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--muted);
       margin-bottom: 0.75rem;
-      font-family: 'Space Mono', monospace;
     }
 
     .ui-row {
       display: flex;
       justify-content: space-between;
-      font-size: 0.8rem;
+      font-size: 0.75rem;
       padding: 0.3rem 0;
-      border-bottom: 1px solid rgba(255,255,255,0.05);
+      border-bottom: 1px solid var(--border);
     }
 
     .ui-row:last-child { border: none; }
     .ui-row span:first-child { color: var(--muted); }
-    .ui-row span:last-child { color: var(--text); }
-    .ui-green { color: var(--green) !important; }
+    .ui-blue { color: var(--blue) !important; font-weight: 700; }
+    .ui-green { color: var(--green) !important; font-weight: 700; }
+
+    /* Tags */
+    .tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+      margin-top: 1rem;
+    }
+
+    .tag {
+      font-size: 0.6rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 0.25rem 0.6rem;
+      border: 1px solid var(--border);
+      color: var(--muted);
+    }
 
     /* Footer */
     footer {
-      padding: 3rem 0;
-      border-top: 1px solid var(--border);
-      text-align: center;
+      padding: 2rem 0;
+      border-top: 2px solid var(--text);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
     }
 
     footer p {
-      font-size: 0.8rem;
+      font-size: 0.7rem;
       color: var(--muted);
-      margin: 0;
+      letter-spacing: 0.05em;
     }
 
     footer a {
-      color: var(--green);
+      color: var(--blue);
       text-decoration: none;
+      font-weight: 700;
     }
 
-    @media (max-width: 600px) {
-      .hero { padding: 3rem 0 2rem; }
-      h1 { font-size: 1.8rem; }
-      .btn-secondary { margin-left: 0; margin-top: 0.75rem; display: block; text-align: center; }
+    @media (max-width: 700px) {
+      .hero { grid-template-columns: 1fr; }
+      .display-preview { margin: 0 auto; }
+      .grid-3 { grid-template-columns: 1fr; }
+      .grid-item { border-right: none !important; }
+      .flash-box { grid-template-columns: 1fr; }
+      .ui-content { grid-template-columns: 1fr; }
+      footer { flex-direction: column; gap: 1rem; }
     }
   </style>
 </head>
@@ -505,74 +540,88 @@
 
 <div class="container">
 
+  <!-- Header -->
+  <header>
+    <div class="site-name">BAMBU<span>MONITOR</span></div>
+    <div class="site-sub">ESP32-C3 + GC9A01 — Open source printer display</div>
+  </header>
+
   <!-- Hero -->
   <div class="hero">
-    <div class="badge">Open Source Project</div>
-    <h1>Bambu <span>Monitor</span></h1>
-    <p class="hero-sub">Een ronde display monitor voor je Bambu Lab 3D printer. Realtime print status, temperaturen en weerinfo op een compact rond scherm.</p>
+    <div class="hero-text">
+      <div class="section-label">Project</div>
+      <h2>Ronde display<br>voor je <span>3D printer</span></h2>
+      <p>Een compacte monitor voor de <strong>Bambu Lab A1 Mini</strong> (en andere modellen). Toont realtime print status, temperaturen en weerinfo op een rond 240×240 scherm. Makkelijk in te stellen via een WiFi portal en te beheren via de browser.</p>
+      <div class="hero-btns">
+        <a href="#installatie" class="btn btn-primary">Aan de slag →</a>
+        <a href="https://github.com/wibo63/bambu-monitor" class="btn btn-secondary">GitHub</a>
+      </div>
+      <div class="tags">
+        <span class="tag">ESP32-C3</span>
+        <span class="tag">GC9A01</span>
+        <span class="tag">MQTT</span>
+        <span class="tag">Arduino</span>
+        <span class="tag">Open source</span>
+      </div>
+    </div>
 
-    <!-- Animated display preview -->
     <div class="display-preview">
-      <svg viewBox="0 0 216 216" fill="none">
-        <circle cx="108" cy="108" r="104" stroke="#1a2a24" stroke-width="8"/>
-        <circle cx="108" cy="108" r="104"
-          stroke="#1D9E75" stroke-width="8"
-          stroke-dasharray="490"
-          stroke-dashoffset="122"
+      <svg viewBox="0 0 192 192" fill="none">
+        <circle cx="96" cy="96" r="92" stroke="#333" stroke-width="6"/>
+        <circle cx="96" cy="96" r="92"
+          stroke="#4ade80" stroke-width="6"
+          stroke-dasharray="434"
+          stroke-dashoffset="108"
           stroke-linecap="round"
-          transform="rotate(-90 108 108)"
-          style="animation: spin 8s linear infinite;">
+          transform="rotate(-90 96 96)">
         </circle>
       </svg>
-      <style>
-        @keyframes spin {
-          0% { stroke-dashoffset: 490; }
-          100% { stroke-dashoffset: -490; }
-        }
-      </style>
       <div class="display-inner">
         <span class="display-time" id="clock">00:00</span>
         <span class="display-temp">18°C ⛅</span>
         <span class="display-date" id="datestr">zo 1 jan</span>
       </div>
     </div>
-
-    <a href="#installatie" class="btn btn-primary">Aan de slag</a>
-    <a href="https://github.com/wibo63/bambu-monitor" class="btn btn-secondary">GitHub →</a>
   </div>
 
   <!-- Features -->
   <section>
     <div class="section-label">Functies</div>
     <h2>Wat doet het?</h2>
-    <div class="features">
-      <div class="feature">
-        <span class="feature-icon">🔄</span>
+    <div class="grid-3">
+      <div class="grid-item">
+        <div class="grid-num">01 / 06</div>
+        <span class="grid-icon">🔄</span>
         <h3>Print status</h3>
         <p>Voortgang, nozzle & bed temperatuur en resterende tijd in één oogopslag.</p>
       </div>
-      <div class="feature">
-        <span class="feature-icon">🌤️</span>
+      <div class="grid-item">
+        <div class="grid-num">02 / 06</div>
+        <span class="grid-icon">🌤️</span>
         <h3>Idle modus</h3>
         <p>Toont de huidige tijd, datum en buitentemperatuur als de printer niet bezig is.</p>
       </div>
-      <div class="feature">
-        <span class="feature-icon">🌐</span>
+      <div class="grid-item">
+        <div class="grid-num">03 / 06</div>
+        <span class="grid-icon">🌐</span>
         <h3>Webinterface</h3>
         <p>Bereikbaar via <code>bambu-monitor.local</code> voor instellingen en status.</p>
       </div>
-      <div class="feature">
-        <span class="feature-icon">⚙️</span>
+      <div class="grid-item">
+        <div class="grid-num">04 / 06</div>
+        <span class="grid-icon">⚙️</span>
         <h3>Makkelijk instellen</h3>
         <p>WiFi portal bij eerste opstart. Daarna alles via de browser aanpasbaar.</p>
       </div>
-      <div class="feature">
-        <span class="feature-icon">⏱️</span>
-        <h3>Automatische timer</h3>
+      <div class="grid-item">
+        <div class="grid-num">05 / 06</div>
+        <span class="grid-icon">⏱️</span>
+        <h3>Auto timer</h3>
         <p>Na afloop van een print gaat het scherm automatisch terug naar idle modus.</p>
       </div>
-      <div class="feature">
-        <span class="feature-icon">📡</span>
+      <div class="grid-item">
+        <div class="grid-num">06 / 06</div>
+        <span class="grid-icon">📡</span>
         <h3>MQTT via LAN</h3>
         <p>Verbindt direct met je printer via het lokale netwerk. Geen cloud nodig.</p>
       </div>
@@ -582,22 +631,24 @@
   <!-- Hardware -->
   <section>
     <div class="section-label">Hardware</div>
-    <h2>Wat heb je nodig?</h2>
-    <p>Alle onderdelen zijn goedkoop verkrijgbaar via AliExpress of lokale electronicawinkels.</p>
-    <div class="hw-grid">
+    <h2>Wat heb je <span>nodig?</span></h2>
+    <p style="font-size:0.85rem;color:var(--muted);margin-bottom:0;">Alle onderdelen zijn goedkoop verkrijgbaar via AliExpress of lokale electronicawinkels. Totaal ca. €10.</p>
+    <div class="hw-list">
       <div class="hw-item">
         <span class="hw-num">01</span>
         <div>
           <div class="hw-name">ESP32-C3 Super Mini</div>
-          <div class="hw-desc">Microcontroller met ingebouwde WiFi — ca. €3</div>
+          <div class="hw-desc">Microcontroller met ingebouwde WiFi</div>
         </div>
+        <span class="hw-price">±€3</span>
       </div>
       <div class="hw-item">
         <span class="hw-num">02</span>
         <div>
           <div class="hw-name">GC9A01 rond display</div>
-          <div class="hw-desc">240×240 pixels, 1.28 inch rond TFT scherm — ca. €4</div>
+          <div class="hw-desc">240×240 pixels, 1.28 inch rond TFT scherm</div>
         </div>
+        <span class="hw-price">±€4</span>
       </div>
       <div class="hw-item">
         <span class="hw-num">03</span>
@@ -605,13 +656,15 @@
           <div class="hw-name">USB-C kabel + oplader</div>
           <div class="hw-desc">Voor voeding en eerste installatie</div>
         </div>
+        <span class="hw-price">—</span>
       </div>
       <div class="hw-item">
         <span class="hw-num">04</span>
         <div>
           <div class="hw-name">Dupont jumper draden</div>
-          <div class="hw-desc">Voor het verbinden van het scherm met de ESP32</div>
+          <div class="hw-desc">Voor bedrading tussen scherm en ESP32</div>
         </div>
+        <span class="hw-price">±€2</span>
       </div>
     </div>
   </section>
@@ -620,7 +673,7 @@
   <section>
     <div class="section-label">Bedrading</div>
     <h2>Aansluiten</h2>
-    <p>Sluit het GC9A01 scherm als volgt aan op de ESP32-C3 Super Mini:</p>
+    <p style="font-size:0.85rem;color:var(--muted);margin-bottom:0;">Sluit het GC9A01 scherm als volgt aan op de ESP32-C3 Super Mini. Let op: sommige schermen labelen MOSI als SDA en SCK als SCL.</p>
     <table class="wire-table">
       <thead>
         <tr>
@@ -644,61 +697,63 @@
   <!-- Installatie -->
   <section id="installatie">
     <div class="section-label">Installatie</div>
-    <h2>Firmware installeren</h2>
-    <p>Geen software installeren nodig — flash de firmware direct vanuit je browser.</p>
-
+    <h2>Firmware <span>installeren</span></h2>
+    <p style="font-size:0.85rem;color:var(--muted);margin-bottom:0;">Geen software installeren nodig — flash de firmware direct vanuit je browser via de web-based flash tool.</p>
     <div class="steps">
       <div class="step">
         <div class="step-num">01</div>
-        <div>
+        <div class="step-content">
           <h3>Download de firmware</h3>
-          <p>Download het <code>firmware.bin</code> bestand hieronder.</p>
+          <p>Download het <code>firmware.bin</code> bestand via de knop hieronder.</p>
         </div>
       </div>
       <div class="step">
         <div class="step-num">02</div>
-        <div>
+        <div class="step-content">
           <h3>Sluit de ESP32 aan</h3>
-          <p>Verbind de ESP32-C3 via USB-C met je computer.</p>
+          <p>Verbind de ESP32-C3 via USB-C met je computer. Gebruik Chrome of Edge (Firefox werkt niet met de flash tool).</p>
         </div>
       </div>
       <div class="step">
         <div class="step-num">03</div>
-        <div>
+        <div class="step-content">
           <h3>Open de flash tool</h3>
-          <p>Ga naar <code>espressif.github.io/esptool-js</code> in Chrome of Edge (Firefox werkt niet).</p>
+          <p>Ga naar <code>espressif.github.io/esptool-js</code> en klik op "Connect". Selecteer de juiste USB poort.</p>
         </div>
       </div>
       <div class="step">
         <div class="step-num">04</div>
-        <div>
+        <div class="step-content">
           <h3>Flash de firmware</h3>
-          <p>Klik "Connect", selecteer het <code>firmware.bin</code> bestand op adres <code>0x10000</code> en klik "Program".</p>
+          <p>Selecteer het <code>firmware.bin</code> bestand en stel het adres in op <code>0x10000</code>. Klik "Program" en wacht tot het klaar is.</p>
         </div>
       </div>
       <div class="step">
         <div class="step-num">05</div>
-        <div>
-          <h3>Eerste opstart</h3>
-          <p>Koppel los van de computer en sluit aan op een USB oplader. Verbind met het WiFi netwerk <code>BambuMonitor</code> en ga naar <code>192.168.4.1</code> om in te stellen.</p>
+        <div class="step-content">
+          <h3>Eerste opstart en instellen</h3>
+          <p>Koppel los van de computer en sluit aan op een USB oplader. Verbind met het WiFi netwerk <code>BambuMonitor</code> en ga naar <code>192.168.4.1</code> om je printer gegevens in te voeren.</p>
         </div>
       </div>
     </div>
 
     <div class="flash-box">
-      <h3>Klaar om te flashen?</h3>
-      <p>Download de nieuwste firmware en flash hem direct via de browser.</p>
-      <a href="firmware.bin" class="btn btn-primary" download>⬇ Download firmware.bin</a>
-      <a href="https://espressif.github.io/esptool-js/" target="_blank" class="btn btn-secondary">Open flash tool →</a>
+      <div>
+        <h3>Klaar om te flashen?</h3>
+        <p>Download de nieuwste firmware en flash hem direct via de browser. Geen software installatie nodig.</p>
+      </div>
+      <div class="flash-btns">
+        <a href="firmware.bin" class="btn btn-primary" download>⬇ Download firmware.bin</a>
+        <a href="https://espressif.github.io/esptool-js/" target="_blank" class="btn btn-secondary">Open flash tool →</a>
+      </div>
     </div>
   </section>
 
   <!-- Webinterface -->
   <section>
     <div class="section-label">Webinterface</div>
-    <h2>Beheer via de browser</h2>
-    <p>Na installatie is de monitor bereikbaar via <strong>bambu-monitor.local</strong> op elk apparaat in je netwerk.</p>
-
+    <h2>Beheer via <span>de browser</span></h2>
+    <p style="font-size:0.85rem;color:var(--muted);margin-bottom:0;">Na installatie is de monitor bereikbaar via <strong>bambu-monitor.local</strong> op elk apparaat in je netwerk. De pagina ververst automatisch elke 10 seconden.</p>
     <div class="ui-preview">
       <div class="ui-bar">
         <div class="ui-dot"></div>
@@ -707,22 +762,18 @@
         <span class="ui-url">bambu-monitor.local</span>
       </div>
       <div class="ui-content">
-        <div class="ui-nav">
-          <div class="ui-tab active">Status</div>
-          <div class="ui-tab">Instellingen</div>
-        </div>
         <div class="ui-card">
-          <div class="ui-card-title">VERBINDING</div>
+          <div class="ui-card-title">Verbinding</div>
           <div class="ui-row"><span>WiFi IP</span><span>192.168.1.42</span></div>
           <div class="ui-row"><span>MQTT</span><span class="ui-green">Verbonden</span></div>
           <div class="ui-row"><span>Printer state</span><span>RUNNING</span></div>
         </div>
         <div class="ui-card">
-          <div class="ui-card-title">PRINTER</div>
-          <div class="ui-row"><span>Voortgang</span><span class="ui-green">67%</span></div>
+          <div class="ui-card-title">Printer</div>
+          <div class="ui-row"><span>Voortgang</span><span class="ui-blue">67%</span></div>
           <div class="ui-row"><span>Nozzle</span><span>220°C</span></div>
           <div class="ui-row"><span>Bed</span><span>60°C</span></div>
-          <div class="ui-row"><span>Bestand</span><span>printer-monitor-lid.stl</span></div>
+          <div class="ui-row"><span>Bestand</span><span>monitor-lid.stl</span></div>
         </div>
       </div>
     </div>
@@ -731,26 +782,29 @@
   <!-- Printer gegevens -->
   <section>
     <div class="section-label">Configuratie</div>
-    <h2>Printer gegevens vinden</h2>
-
-    <div class="features" style="grid-template-columns: 1fr 1fr;">
-      <div class="feature">
-        <span class="feature-icon">🔢</span>
+    <h2>Printer gegevens <span>vinden</span></h2>
+    <div class="grid-3" style="grid-template-columns: repeat(2, 1fr);">
+      <div class="grid-item">
+        <div class="grid-num">01 / 04</div>
+        <span class="grid-icon">🔢</span>
         <h3>Printer IP adres</h3>
         <p>Te vinden in de Bambu app onder netwerkinstellingen, of in je router bij verbonden apparaten.</p>
       </div>
-      <div class="feature">
-        <span class="feature-icon">🔑</span>
+      <div class="grid-item">
+        <div class="grid-num">02 / 04</div>
+        <span class="grid-icon">🔑</span>
         <h3>LAN access code</h3>
         <p>Open de Bambu app → printer instellingen → zoek naar "Access code" of "LAN mode".</p>
       </div>
-      <div class="feature">
-        <span class="feature-icon">🏷️</span>
+      <div class="grid-item">
+        <div class="grid-num">03 / 04</div>
+        <span class="grid-icon">🏷️</span>
         <h3>Serienummer</h3>
         <p>Op de sticker aan de onderkant van de printer, of in de Bambu app onder printer info.</p>
       </div>
-      <div class="feature">
-        <span class="feature-icon">🔄</span>
+      <div class="grid-item">
+        <div class="grid-num">04 / 04</div>
+        <span class="grid-icon">🔄</span>
         <h3>Reset</h3>
         <p>Houd de BOOT knop 3 seconden ingedrukt na opstarten, of ga naar <code>/reset</code> in de browser.</p>
       </div>
@@ -759,13 +813,13 @@
 
   <!-- Footer -->
   <footer>
-    <p>Bambu Monitor — Open source project · Gebouwd met ESP32-C3 + Arduino · <a href="https://github.com/wibo63/bambu-monitor">GitHub</a></p>
+    <p>Bambu Monitor — Open source · ESP32-C3 + Arduino · <a href="https://github.com/wibo63/bambu-monitor">github.com/wibo63/bambu-monitor</a></p>
+    <p>Gebouwd door <a href="https://koolstraweb.nl">koolstraweb.nl</a></p>
   </footer>
 
 </div>
 
 <script>
-  // Live clock
   function updateClock() {
     const now = new Date();
     const h = String(now.getHours()).padStart(2, '0');
